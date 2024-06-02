@@ -18,3 +18,11 @@ type ResponseUploadFile struct {
 func MigrateFiles(db *gorm.DB) error {
 	return db.AutoMigrate(&File{})
 }
+
+
+
+
+
+
+
+
