@@ -1,4 +1,11 @@
 definitions:
+  handlers.Credentials:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   models.Organization:
     properties:
       about:
@@ -41,6 +48,8 @@ definitions:
         type: string
       state:
         type: string
+      userId:
+        type: integer
     type: object
   models.Photo:
     properties:
@@ -78,6 +87,53 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User Credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.Credentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Log in a user
+      tags:
+      - authentication
+  /api/myorganization:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get organization details by user ID
+      tags:
+      - organizations
   /api/organization:
     post:
       consumes:
@@ -361,6 +417,40 @@ paths:
       summary: Update plan details
       tags:
       - plans
+  /api/signup:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User Credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.Credentials'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Sign up a new user
+      tags:
+      - authentication
   /api/upload:
     post:
       consumes:

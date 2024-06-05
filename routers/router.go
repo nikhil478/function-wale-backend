@@ -9,9 +9,12 @@ import (
 
 // SetupRoutes initializes the routes
 func SetupRoutes(app *fiber.App, db *gorm.DB, s3Client *s3.S3) {
+
+	app.Post("/api/signup", handlers.SignUp(db))
+	app.Post("/api/login", handlers.Login(db))
+
 	api := app.Group("/api")
-	api.Post("/organization", handlers.CreateOrganization(db))
-	api.Put("/organization", handlers.UpdateOrganization(db))
+	
 	api.Get("/organization/:id", handlers.GetOrganizationDetailById(db))
 	api.Post("/upload", handlers.UploadFileAmazonS3(s3Client))
 	api.Get("/organizations", handlers.GetOrganizations(db))
@@ -24,4 +27,9 @@ func SetupRoutes(app *fiber.App, db *gorm.DB, s3Client *s3.S3) {
     api.Post("/plans", handlers.CreatePlan(db))
     api.Get("/plans", handlers.GetPlansByOrganization(db))
     api.Put("/plans", handlers.UpdatePlan(db))
+
+	api.Use(handlers.JWTMiddleware())
+	api.Post("/organization", handlers.CreateOrganization(db))
+	api.Put("/organization", handlers.UpdateOrganization(db))
+	api.Get("/myorganization", handlers.GetOrganizationByUserID(db))
 }

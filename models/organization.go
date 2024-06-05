@@ -4,6 +4,7 @@ import "gorm.io/gorm"
 
 type Organization struct {
 	ID           uint        `gorm:"primary key;autoIncrement" json:"id"`
+	UserID       uint        `json:"userId"`
 	Name         string      `json:"name"`
 	Bio          string      `json:"bio"`
 	AddressLine  string      `json:"addressLine"`
