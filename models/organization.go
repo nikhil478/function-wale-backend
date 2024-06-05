@@ -39,6 +39,7 @@ type Plan struct {
 	ID             uint        `gorm:"primary key;autoIncrement" json:"id"`
 	OrganizationID string      `json:"organizationId"`
 	Type           string      `json:"type"`
+	Tag            string      `json:"tag"`
 	StartingFrom   int         `json:"startingFrom"`
 	Services       StringArray `json:"services"`
 }
